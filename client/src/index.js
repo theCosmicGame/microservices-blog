@@ -3,14 +3,15 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 
-/* removed becaause of migration to React 18 which does not support render from ReactDOM
+const container = document.getElementById('root');
+const root = createRoot(container);
+
+/* Option A: removed becaause of migration to React 18 which does not support render from ReactDOM
     ReactDOM.render(
         <App />, 
         container
     );
 */
 
-const container = document.getElementById('root');
-const root = createRoot(container);
-
+/* USE Option B  */
 root.render(<App />);
