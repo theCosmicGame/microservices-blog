@@ -1,10 +1,12 @@
 const express = require('express');         // server
 const bodyParser = require('body-parser');  
 const { randomBytes } = require('crypto');  // function to generate random IDs
+const cors = require('cors');
 
 const app = express();
 const port = 4001
 app.use(bodyParser.json());
+app.use(cors());
 
 // "byPostId" because we want this data structure  - to look up all the comments associated with a given post
 const commentsByPostId = {};

@@ -3,7 +3,7 @@ import axios from "axios";
 
  
 const PostCreate = () => {
-  // declare new piece of state using useState hook
+  // declare new piece of state (of string) using useState hook
   const [title, setTitle] = useState("");
 
   const onSubmit = async (event) => {
