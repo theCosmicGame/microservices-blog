@@ -3,11 +3,13 @@ import axios from "axios";
 
  
 const PostCreate = () => {
+  // declare new piece of state using useState hook
   const [title, setTitle] = useState("");
 
   const onSubmit = async (event) => {
     event.preventDefault();
 
+    // ties out to testing the API with POST @ localhost:4000/posts and body needing a title
     await axios.post("http://localhost:4000/posts", {
       title,
     });
@@ -21,6 +23,7 @@ const PostCreate = () => {
       <form onSubmit={onSubmit}>
         <div className="form-group">
           <label>Title</label>
+          {/* onChange event handler will make a post request to the API - any submission event e, call set setTitle with e.target.value */}
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
