@@ -10,7 +10,8 @@ const PostList = () => {
 
   // async function since we are using the await syntax
   const fetchPosts = async () => {
-    const res = await axios.get("http://localhost:4000/posts");     // pass posts endpoint as path
+    // endpoint changed from localhost:4000/posts to localhost:4002/posts when we added the Query Service
+    const res = await axios.get("http://localhost:4002/posts");     // pass posts endpoint as path
 
     // set the data property of response to update setPosts piece of state
     setPosts(res.data);
@@ -29,18 +30,17 @@ const PostList = () => {
       <div
         className="card"
         style={{ width: "30%", marginBottom: "20px" }}
-        // React expects a key property since we are generating a list of key properties
-        key={post.id} // unique post IDs 
+        key={post.id}
       >
         <div className="card-body">
-        {/* use curly braces as we are passing a javascript variable in JSX*/}
           <h3>{post.title}</h3>
-          <CommentList postId={post.id} />
+          <CommentList comments={post.comments} />
           <CommentCreate postId={post.id} />
         </div>
       </div>
     );
   });
+    
 
   return (
     // display renderedPosts
