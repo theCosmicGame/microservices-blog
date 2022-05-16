@@ -10,6 +10,7 @@ app.post('/events', async (req, res) => {
   const { type, data } = req.body;
 
   if (type === 'CommentCreated') {
+    // filter out comments that contain 'orange' and emit CommentModerated if rejected or approved
     const status = data.content.includes('orange') ? 'rejected' : 'approved';
 
     await axios.post('http://localhost:4005/events', {
@@ -22,7 +23,7 @@ app.post('/events', async (req, res) => {
       }
     });
   }
-
+  
   res.send({});
 });
 

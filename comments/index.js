@@ -29,6 +29,7 @@ app.post("/posts/:id/comments", async (req, res) => {
   const commentId = randomBytes(4).toString('hex');
   const { content } = req.body;
 
+  // get list of comments or return an empty list
   const comments = commentsByPostId[req.params.id] || [];
 
     // push in the new comment into the post's comment array
@@ -36,6 +37,7 @@ app.post("/posts/:id/comments", async (req, res) => {
 
   commentsByPostId[req.params.id] = comments;
 
+  // CommentCreated resource with data {id,content,postId,status}
   await axios.post("http://localhost:4005/events", {
     type: "CommentCreated",
     data: {
@@ -54,6 +56,7 @@ app.post("/events", async (req, res) => {
 
   const { type, data } = req.body;
 
+  // CommentModer resource with data { postId, id, status, content }
   if (type === "CommentModerated") {
     const { postId, id, status, content } = data;
     const comments = commentsByPostId[postId];

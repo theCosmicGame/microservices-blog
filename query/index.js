@@ -9,21 +9,42 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const posts = {};
+// quick example
+/*
+posts === {
+  'ifnavd': {
+    id: 'ifnavd',
+    title: 'title of post',
+    comments: [
+      { id: 'fsfsd', content: 'comment!' }
+    ]
+  }
+};
+*/
 
+// event handler
+// EVERY EVENT has a type and data property
+// our react app goes through query service to GET /posts for everything to show to the user
+// Query really only cares about POST CREATION events
 const handleEvent = (type, data) => {
   if (type === "PostCreated") {
     const { id, title } = data;
 
+    // new posts don't have comments
     posts[id] = { id, title, comments: [] };
   }
 
   if (type === "CommentCreated") {
+    // status of moderation service
     const { id, content, postId, status } = data;
 
     const post = posts[postId];
     post.comments.push({ id, content, status });
   }
 
+  console.log(posts)
+
+  // if comment was updated, take their attributes and use them (i.e. CommentUpdated is a generic event)
   if (type === "CommentUpdated") {
     const { id, content, postId, status } = data;
 
@@ -37,10 +58,12 @@ const handleEvent = (type, data) => {
   }
 };
 
+// route handler
 app.get("/posts", (req, res) => {
   res.send(posts);
 });
 
+// route handler
 app.post("/events", (req, res) => {
   const { type, data } = req.body;
 
@@ -51,14 +74,16 @@ app.post("/events", (req, res) => {
 
 app.listen(port, async () => {
   console.log("Listening on " + port);
+
   try {
     const res = await axios.get("http://localhost:4005/events");
 
     for (let event of res.data) {
-      console.log("Processing event:", event.type);
+      console.log("Processing event at our (query) endpoint:", event.type);
 
       handleEvent(event.type, event.data);
     }
+    
   } catch (error) {
     console.log(error.message);
   }
